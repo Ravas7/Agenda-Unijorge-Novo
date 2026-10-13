@@ -1,0 +1,233 @@
+<section class="pagina-evento">
+  <div class="cabecalho">
+    <h2>Cadastro de Evento</h2>
+    <p>Preencha os dados para cadastrar um novo evento.</p>
+  </div>
+
+  <form
+    #formEvento="ngForm"
+    (ngSubmit)="salvarEvento(formEvento)"
+    class="formulario-evento"
+    novalidate
+  >
+    <!-- Título do evento -->
+    <div class="campo">
+      <label for="titulo">Título do evento</label>
+
+      <input
+        type="text"
+        id="titulo"
+        name="titulo"
+        [(ngModel)]="titulo"
+        #tituloControle="ngModel"
+        (blur)="tituloControle.control.markAsTouched()"
+        [class.invalido]="
+          tituloControle.touched &&
+          validacoes.validarTitulo(titulo) !== null
+        "
+        minlength="5"
+        maxlength="80"
+        placeholder="Digite o título do evento"
+      />
+
+      @if (
+        tituloControle.touched &&
+        validacoes.validarTitulo(titulo) !== null
+      ) {
+        <small class="mensagem-erro">
+          {{ validacoes.validarTitulo(titulo) }}
+        </small>
+      }
+    </div>
+
+    <!-- Data -->
+    <div class="campo">
+      <label for="data">Data</label>
+
+      <input
+        type="date"
+        id="data"
+        name="data"
+        [(ngModel)]="data"
+        #dataControle="ngModel"
+        (blur)="dataControle.control.markAsTouched()"
+        [class.invalido]="
+          dataControle.touched &&
+          validacoes.validarData(data) !== null
+        "
+      />
+
+      @if (
+        dataControle.touched &&
+        validacoes.validarData(data) !== null
+      ) {
+        <small class="mensagem-erro">
+          {{ validacoes.validarData(data) }}
+        </small>
+      }
+    </div>
+
+    <!-- Local -->
+    <div class="campo">
+      <label for="local">Local</label>
+
+      <select
+        id="local"
+        name="local"
+        [(ngModel)]="local"
+        #localControle="ngModel"
+        (blur)="localControle.control.markAsTouched()"
+        [class.invalido]="
+          localControle.touched &&
+          validacoes.validarLocal(local) !== null
+        "
+      >
+        <option value="">Selecione o local</option>
+
+        @for (opcao of locais; track opcao) {
+          <option [value]="opcao">
+            {{ opcao }}
+          </option>
+        }
+      </select>
+
+      @if (
+        localControle.touched &&
+        validacoes.validarLocal(local) !== null
+      ) {
+        <small class="mensagem-erro">
+          {{ validacoes.validarLocal(local) }}
+        </small>
+      }
+    </div>
+
+    <!-- E-mail do responsável -->
+    <div class="campo">
+      <label for="emailResponsavel">
+        E-mail do responsável
+      </label>
+
+      <input
+        type="email"
+        id="emailResponsavel"
+        name="emailResponsavel"
+        [(ngModel)]="emailResponsavel"
+        #emailControle="ngModel"
+        (blur)="emailControle.control.markAsTouched()"
+        [class.invalido]="
+          emailControle.touched &&
+          validacoes.validarEmailResponsavel(emailResponsavel) !== null
+        "
+        placeholder="exemplo@email.com"
+      />
+
+      @if (
+        emailControle.touched &&
+        validacoes.validarEmailResponsavel(emailResponsavel) !== null
+      ) {
+        <small class="mensagem-erro">
+          {{ validacoes.validarEmailResponsavel(emailResponsavel) }}
+        </small>
+      }
+    </div>
+
+    <!-- Vagas -->
+    <div class="campo">
+      <label for="vagas">Vagas</label>
+
+      <input
+        type="number"
+        id="vagas"
+        name="vagas"
+        [(ngModel)]="vagas"
+        #vagasControle="ngModel"
+        (blur)="vagasControle.control.markAsTouched()"
+        [class.invalido]="
+          vagasControle.touched &&
+          validacoes.validarVagas(vagas, local) !== null
+        "
+        min="1"
+        max="200"
+        step="1"
+        placeholder="De 1 a 200 vagas"
+      />
+
+      @if (
+        vagasControle.touched &&
+        validacoes.validarVagas(vagas, local) !== null
+      ) {
+        <small class="mensagem-erro">
+          {{ validacoes.validarVagas(vagas, local) }}
+        </small>
+      }
+    </div>
+
+    <!-- Botões -->
+    <div class="botoes">
+      <button
+        type="submit"
+        [disabled]="!formularioValido"
+      >
+        Salvar
+      </button>
+
+      <button
+        type="button"
+        class="botao-limpar"
+        (click)="limparFormulario(formEvento)"
+      >
+        Limpar
+      </button>
+    </div>
+  </form>
+
+  <!-- Lista de eventos cadastrados -->
+  <section class="lista-eventos">
+    <h2>Eventos cadastrados</h2>
+
+    @for (evento of eventos; track evento.id) {
+      <article class="cartao-evento">
+        <div class="informacoes-evento">
+          <h3>{{ evento.titulo }}</h3>
+
+          <p>
+            <strong>ID:</strong>
+            {{ evento.id }}
+          </p>
+
+          <p>
+            <strong>Data:</strong>
+            {{ evento.data }}
+          </p>
+
+          <p>
+            <strong>Local:</strong>
+            {{ evento.local }}
+          </p>
+
+          <p>
+            <strong>Responsável:</strong>
+            {{ evento.emailResponsavel }}
+          </p>
+
+          <p>
+            <strong>Vagas:</strong>
+            {{ evento.vagas }}
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="botao-excluir"
+          (click)="excluirEvento(evento.id)"
+        >
+          Excluir
+        </button>
+      </article>
+    } @empty {
+      <p class="vazio">
+        Nenhum evento cadastrado.
+      </p>
+    }
+  </section>
+</section>

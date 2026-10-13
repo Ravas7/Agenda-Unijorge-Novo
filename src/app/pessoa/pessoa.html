@@ -1,0 +1,109 @@
+<main class="miolo">
+  <section class="cabecalho">
+    <h2>{{ titulo }}</h2>
+    <p>Preencha os dados da pessoa para realizar o cadastro.</p>
+  </section>
+
+  <form (ngSubmit)="salvar()" #formulario="ngForm">
+    <fieldset>
+      <legend>Dados pessoais</legend>
+      <div class="campo"><label for="nomeCompleto">Nome completo</label><input id="nomeCompleto" name="nomeCompleto" type="text" placeholder="Digite o nome completo" [(ngModel)]="pessoa.nomeCompleto" required minlength="3"></div>
+      <div class="linha">
+        <div class="campo"><label for="dataNascimento">Data de nascimento</label><input id="dataNascimento" name="dataNascimento" type="date" [(ngModel)]="pessoa.dataNascimento" required></div>
+        <div class="campo"><label for="cpf">Número CPF</label><input id="cpf" name="cpf" type="text" inputmode="numeric" maxlength="11" placeholder="Somente números" [(ngModel)]="pessoa.cpf" required></div>
+      </div>
+      <div class="linha">
+        <div class="campo"><label for="rg">Número RG</label><input id="rg" name="rg" type="text" inputmode="numeric" maxlength="14" placeholder="Digite o RG" [(ngModel)]="pessoa.rg" required></div>
+        <div class="campo"><label for="nomeMae">Nome da mãe</label><input id="nomeMae" name="nomeMae" type="text" placeholder="Digite o nome da mãe" [(ngModel)]="pessoa.nomeMae" required></div>
+      </div>
+      <div class="campo"><label for="nomePai">Nome do pai</label><input id="nomePai" name="nomePai" type="text" placeholder="Digite o nome do pai" [(ngModel)]="pessoa.nomePai" required></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Origem</legend>
+      <div class="cascata-origem">
+        <div class="campo">
+          <label for="paisOrigem">País de origem</label>
+          <div class="cascata" (click)="$event.stopPropagation()">
+            <div class="pesquisa-cascata">
+              <input id="paisOrigem" name="paisOrigemBusca" type="text" autocomplete="off" placeholder="Digite para pesquisar o país" [(ngModel)]="paisBusca" (input)="filtrarPaises()" (focus)="abrirPaises()" required>
+              <button type="button" class="seta" (click)="abrirPaises()" aria-label="Abrir lista de países">⌄</button>
+            </div>
+            @if (dropdownAberto === 'pais') {
+              <div class="cascata-opcoes">
+                @if (paisesFiltrados.length === 0) { <span class="sem-opcoes">Nenhum país encontrado.</span> }
+                @for (pais of paisesFiltrados; track pais.nome) {
+                  <button type="button" (click)="selecionarPais(pais.nome)">{{ pais.nome }}</button>
+                }
+              </div>
+            }
+          </div>
+          <small class="dica">Pesquise digitando ou abra a lista. Apenas países com mais de 5 milhões de habitantes.</small>
+        </div>
+
+        <div class="campo">
+          <label for="ufOrigem">UF / Estado de origem</label>
+          @if (ufs.length === 0 && pessoa.paisOrigem) {
+            <input id="ufOrigem" name="ufOrigem" type="text" value="País sem UF" disabled class="campo-bloqueado">
+            <small class="dica">Este país não possui UF/estado no padrão adotado pelo cadastro. Regiões, distritos e departamentos não são usados como UF.</small>
+          } @else {
+            <div class="cascata" (click)="$event.stopPropagation()">
+              <div class="pesquisa-cascata">
+                <input id="ufOrigem" name="ufOrigemBusca" type="text" autocomplete="off" placeholder="Digite para pesquisar a UF/estado" [(ngModel)]="ufBusca" (input)="filtrarUfs()" (focus)="abrirUfs()" [disabled]="!pessoa.paisOrigem" required>
+                <button type="button" class="seta" (click)="abrirUfs()" [disabled]="!pessoa.paisOrigem" aria-label="Abrir lista de UFs">⌄</button>
+              </div>
+              @if (dropdownAberto === 'uf') {
+                <div class="cascata-opcoes">
+                  @if (ufsFiltradas.length === 0) { <span class="sem-opcoes">Nenhuma UF encontrada.</span> }
+                  @for (uf of ufsFiltradas; track uf) {
+                    <button type="button" (click)="selecionarUf(uf)">{{ uf }}</button>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="campo">
+          <label for="cidadeOrigem">Cidade de origem</label>
+          @if (cidades.length > 0) {
+            <div class="cascata" (click)="$event.stopPropagation()">
+              <div class="pesquisa-cascata">
+                <input id="cidadeOrigem" name="cidadeOrigem" type="text" autocomplete="off" placeholder="Selecione a cidade" [value]="pessoa.cidadeOrigem" readonly [disabled]="!pessoa.ufOrigem || pessoa.ufOrigem === 'País sem UF'">
+                <button type="button" class="seta" (click)="alternarCidade()" [disabled]="!pessoa.ufOrigem || pessoa.ufOrigem === 'País sem UF'" aria-label="Abrir lista de cidades">⌄</button>
+              </div>
+              @if (dropdownAberto === 'cidade') {
+                <div class="cascata-opcoes">
+                  @for (cidade of cidades; track cidade) {
+                    <button type="button" (click)="selecionarCidade(cidade)">{{ cidade }}</button>
+                  }
+                </div>
+              }
+            </div>
+          } @else {
+            <input id="cidadeOrigem" name="cidadeOrigem" type="text" placeholder="Digite a cidade" [(ngModel)]="pessoa.cidadeOrigem" [disabled]="!pessoa.paisOrigem" required>
+          }
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="acoes">
+      <button type="submit" [disabled]="formulario.invalid">Salvar</button>
+      <button type="button" class="secundario" (click)="limpar()">Limpar</button>
+    </div>
+  </form>
+
+  @if (salvou) { <p class="sucesso">Pessoa salva no servidor. Ela continuará disponível ao trocar de página enquanto o servidor estiver ligado.</p> }
+
+  @if (cadastradas.length > 0) {
+    <section class="resultado">
+      <h3>Pessoas cadastradas</h3>
+      @for (cadastro of cadastradas; track cadastro.id) {
+        <article class="pessoa-card">
+          <div><strong>{{ cadastro.nomeCompleto }}</strong><span>{{ cadastro.cpf }} · {{ cadastro.cidadeOrigem }} - {{ cadastro.ufOrigem }} · {{ cadastro.paisOrigem }}</span></div>
+          <button type="button" class="excluir" (click)="remover(cadastro.id)">Excluir</button>
+        </article>
+      }
+    </section>
+  }
+</main>
