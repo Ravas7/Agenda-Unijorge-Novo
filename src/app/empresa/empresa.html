@@ -1,0 +1,121 @@
+
+<section class="pagina-empresa">
+  <div class="cabecalho-empresa">
+    <h2>Cadastro de Empresa</h2>
+    <p>Preencha os dados da empresa abaixo.</p>
+  </div>
+
+  <form
+    #formEmpresa="ngForm"
+    (ngSubmit)="enviar()"
+    (reset)="limpar()"
+    class="formulario-empresa"
+    novalidate
+  >
+    <div class="campo">
+      <label for="nome">Nome</label>
+
+      <input
+        type="text"
+        id="nome"
+        name="nome"
+        [(ngModel)]="empresa.nome"
+        placeholder="Digite o nome da empresa"
+      />
+    </div>
+
+    <div class="campo">
+      <label for="cnpj">CNPJ</label>
+
+      <input
+        type="text"
+        id="cnpj"
+        name="cnpj"
+        [(ngModel)]="empresa.cnpj"
+        placeholder="Digite o CNPJ"
+      />
+    </div>
+
+    <div class="campo">
+      <label for="logomarca">Logomarca (URL da imagem)</label>
+
+      <input
+        type="text"
+        id="logomarca"
+        name="logomarca"
+        [(ngModel)]="empresa.logomarca"
+        placeholder="https://exemplo.com/imagem.png"
+      />
+    </div>
+
+    <div class="campo">
+      <label for="fundacao">Fundação</label>
+
+      <input
+        type="date"
+        id="fundacao"
+        name="fundacao"
+        [(ngModel)]="empresa.fundacao"
+      />
+    </div>
+
+    <div class="campo">
+      <label for="descricao">Descrição</label>
+
+      <input
+        type="text"
+        id="descricao"
+        name="descricao"
+        [(ngModel)]="empresa.descricao"
+        placeholder="Descreva a empresa"
+      />
+    </div>
+
+    <div class="botoes">
+      <button type="reset" class="botao-limpar">
+        Limpar
+      </button>
+
+      <button type="submit" class="botao-enviar">
+        Enviar
+      </button>
+    </div>
+  </form>
+
+  @if (mensagem) {
+    <p class="mensagem-sucesso" role="status">
+      {{ mensagem }}
+    </p>
+  }
+
+  @if (empresaEnviada) {
+    <section class="resultado-empresa">
+      <h3>Dados enviados</h3>
+
+      <p>
+        <strong>Nome:</strong>
+        {{ empresaEnviada.nome }}
+      </p>
+
+      <p>
+        <strong>CNPJ:</strong>
+        {{ empresaEnviada.cnpj }}
+      </p>
+
+      <p>
+        <strong>Logomarca:</strong>
+        {{ empresaEnviada.logomarca }}
+      </p>
+
+      <p>
+        <strong>Fundação:</strong>
+        {{ empresaEnviada.fundacao }}
+      </p>
+
+      <p>
+        <strong>Descrição:</strong>
+        {{ empresaEnviada.descricao }}
+      </p>
+    </section>
+  }
+</section>
