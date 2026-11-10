@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 import { Evento } from '../models/evento';
+import { EventoService } from '../services/evento.service';
 import * as ValidacoesEvento from '../models/evento.validacao';
 
 @Component({
   selector: 'app-cadastro-evento',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './cadastro-evento.html',
   styleUrl: './cadastro-evento.css'
 })
@@ -18,8 +20,8 @@ export class CadastroEvento {
   emailResponsavel = '';
   vagas: number | null = null;
 
-  proximoId = 1;
-  eventos: Evento[] = [];
+  /** Os eventos moram no servico: assim o Participante enxerga os mesmos. */
+  readonly servico = inject(EventoService);
 
   readonly validacoes = ValidacoesEvento;
 
@@ -29,6 +31,10 @@ export class CadastroEvento {
     'Laboratório 2',
     'Sala 101'
   ];
+
+  get eventos(): Evento[] {
+    return this.servico.eventos;
+  }
 
   get formularioValido(): boolean {
     return (
@@ -50,18 +56,13 @@ export class CadastroEvento {
       return;
     }
 
-    const evento: Evento = {
-      id: this.proximoId,
+    this.servico.adicionarEvento({
       titulo: this.titulo.trim(),
       data: this.data,
       local: this.local,
       emailResponsavel: this.emailResponsavel.trim(),
       vagas: this.vagas
-    };
-
-    this.eventos.push(evento);
-
-    this.proximoId++;
+    });
 
     this.limparFormulario(formulario);
   }
@@ -83,8 +84,6 @@ export class CadastroEvento {
   }
 
   excluirEvento(id: number): void {
-    this.eventos = this.eventos.filter(
-      evento => evento.id !== id
-    );
+    this.servico.excluirEvento(id);
   }
 }

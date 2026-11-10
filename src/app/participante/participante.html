@@ -1,0 +1,115 @@
+<a class="voltar" routerLink="/eventos/novo">Voltar para eventos</a>
+
+@if (evento; as e) {
+  <header class="cabeca">
+    <h2>Participantes</h2>
+    <p>Cadastre quem vai participar deste evento.</p>
+  </header>
+
+  <!-- ====================== O EVENTO ====================== -->
+  <section class="evento">
+    <b>{{ e.titulo }}</b>
+    <span>{{ e.data }} &middot; {{ e.local }}</span>
+    <span>
+      {{ participantes.length }} de {{ e.vagas }} vagas preenchidas
+    </span>
+  </section>
+
+  <!-- ================== NOVO PARTICIPANTE ================== -->
+  <form class="ficha" (ngSubmit)="salvar()" novalidate>
+
+    @if (lotado) {
+      <p class="resumo erro">Evento lotado: não há mais vagas.</p>
+    } @else if (temErro) {
+      <p class="resumo erro">{{ quantidadeDeErros }} campo(s) com erro</p>
+    } @else {
+      <p class="resumo ok">Tudo certo</p>
+    }
+
+    <div class="campo">
+      <label for="descricao">Descrição</label>
+      <input id="descricao" name="descricao" type="text"
+             maxlength="100"
+             placeholder="Ex.: Maria Souza, aluna de Engenharia"
+             [(ngModel)]="rascunho.descricao"
+             [class.invalido]="deveMostrar('descricao')"
+             (blur)="marcarTocado('descricao')">
+      @if (deveMostrar('descricao')) {
+        <small class="erro">{{ mensagem('descricao') }}</small>
+      }
+    </div>
+
+    <div class="campo">
+      <label for="email">E-mail</label>
+      <input id="email" name="email" type="email"
+             placeholder="nome@exemplo.com"
+             [(ngModel)]="rascunho.email"
+             [class.invalido]="deveMostrar('email')"
+             (blur)="marcarTocado('email')">
+      @if (deveMostrar('email')) {
+        <small class="erro">{{ mensagem('email') }}</small>
+      }
+    </div>
+
+    <div class="campo">
+      <label for="telefone">Telefone</label>
+      <input id="telefone" name="telefone" type="tel"
+             maxlength="15"
+             placeholder="(71) 90000-0000"
+             [(ngModel)]="rascunho.telefone"
+             [class.invalido]="deveMostrar('telefone')"
+             (blur)="marcarTocado('telefone')">
+      @if (deveMostrar('telefone')) {
+        <small class="erro">{{ mensagem('telefone') }}</small>
+      }
+    </div>
+
+    <div class="campo">
+      <label for="formaPagamento">Forma de pagamento</label>
+      <select id="formaPagamento" name="formaPagamento"
+              [(ngModel)]="rascunho.formaPagamento"
+              [class.invalido]="deveMostrar('formaPagamento')"
+              (blur)="marcarTocado('formaPagamento')">
+        <option value="">Selecione...</option>
+        @for (f of formas; track f.valor) {
+          <option [value]="f.valor">{{ f.rotulo }}</option>
+        }
+      </select>
+      @if (deveMostrar('formaPagamento')) {
+        <small class="erro">{{ mensagem('formaPagamento') }}</small>
+      }
+    </div>
+
+    <div class="acoes">
+      <button type="submit" [disabled]="temErro || lotado">Salvar</button>
+      <button type="button" class="secundario" (click)="limpar()">Limpar</button>
+    </div>
+  </form>
+
+  <!-- ===================== PARTICIPANTES ===================== -->
+  <section class="lista">
+    <h3>Participantes cadastrados ({{ participantes.length }})</h3>
+
+    @for (p of participantes; track p.id) {
+      <article class="cartao">
+        <div>
+          <b>{{ p.descricao }}</b>
+          <span>{{ p.email }} &middot; {{ p.telefone }}</span>
+          <span>Pagamento: {{ rotuloPagamento(p.formaPagamento) }}</span>
+        </div>
+        <button type="button" class="secundario" (click)="remover(p.id)">Remover</button>
+      </article>
+    } @empty {
+      <p class="vazio">Nenhum participante ainda. Preencha o formulário acima.</p>
+    }
+  </section>
+} @else {
+  <section class="nao-achou">
+    <h2>Evento não encontrado</h2>
+    <p>
+      Nenhum evento corresponde a este endereço. Os eventos ficam apenas na memória:
+      ao recarregar a página (F5), eles são apagados.
+    </p>
+    <a routerLink="/eventos/novo">Cadastrar um evento</a>
+  </section>
+}

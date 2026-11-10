@@ -1,0 +1,259 @@
+/*
+  Vale SO para este componente. As cores vem das variaveis do :root
+  em src/styles.css, o mesmo visual do formulario padrao.
+*/
+
+:host {
+  display: block;
+}
+
+.voltar {
+  display: inline-block;
+  margin-bottom: 14px;
+  font-size: 14px;
+  color: var(--azul-claro);
+  text-decoration: none;
+}
+
+.voltar:hover {
+  text-decoration: underline;
+}
+
+.cabeca {
+  margin-bottom: 18px;
+}
+
+.cabeca h2 {
+  margin: 0 0 6px;
+  font-size: 26px;
+  letter-spacing: -0.015em;
+}
+
+.cabeca p {
+  margin: 0;
+  color: var(--tinta-2);
+  font-size: 14.5px;
+}
+
+/* o evento ao qual os participantes pertencem */
+.evento {
+  background: var(--cartao);
+  border: 1px solid var(--linha);
+  border-left: 3px solid var(--ouro);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 20px;
+}
+
+.evento b {
+  display: block;
+  font-size: 16px;
+  overflow-wrap: anywhere;
+}
+
+.evento span {
+  display: block;
+  color: var(--tinta-2);
+  font-size: 13px;
+}
+
+/* o cartao do formulario */
+.ficha {
+  background: var(--cartao);
+  border: 1px solid var(--linha);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  padding: 26px 28px 22px;
+}
+
+.resumo {
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+  margin: 0 0 6px;
+  padding: 9px 14px;
+  border-radius: 99px;
+  border: 1px solid;
+}
+
+.resumo.erro {
+  color: var(--erro);
+  background: var(--erro-fundo);
+  border-color: #f0d3d8;
+}
+
+.resumo.ok {
+  color: var(--ok);
+  background: #f1f9f5;
+  border-color: #cfe8dc;
+}
+
+.campo {
+  margin-top: 16px;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+input,
+select {
+  width: 100%;
+  font: inherit;
+  font-size: 15px;
+  padding: 9px 11px;
+  border: 1px solid #c6ced6;
+  border-radius: 6px;
+  background: #fff;
+  color: inherit;
+  transition: border-color 0.14s ease, box-shadow 0.14s ease;
+}
+
+input::placeholder {
+  color: var(--tinta-3);
+}
+
+input:focus-visible,
+select:focus-visible {
+  outline: none;
+  border-color: var(--azul-claro);
+  box-shadow: 0 0 0 3px rgba(29, 90, 168, 0.16);
+}
+
+.invalido {
+  border-color: var(--erro);
+  background: var(--erro-fundo);
+}
+
+.invalido:focus-visible {
+  border-color: var(--erro);
+  box-shadow: 0 0 0 3px rgba(179, 44, 69, 0.14);
+}
+
+small {
+  display: block;
+  margin-top: 5px;
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.erro {
+  color: var(--erro);
+  font-weight: 600;
+}
+
+/* botoes */
+.acoes {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+button {
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 11px 30px;
+  border-radius: 6px;
+  border: 1px solid var(--azul);
+  background: var(--azul);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.14s ease;
+}
+
+button:hover:not(:disabled) {
+  background: var(--azul-claro);
+}
+
+button:disabled {
+  background: #e9edf1;
+  border-color: #dde3e9;
+  color: #a3aeb9;
+  cursor: not-allowed;
+}
+
+button.secundario {
+  background: transparent;
+  color: var(--azul);
+  font-weight: 500;
+}
+
+button.secundario:hover {
+  background: #eef3f9;
+}
+
+/* lista */
+.lista {
+  margin-top: 34px;
+}
+
+.lista h3 {
+  text-align: center;
+  font-size: 15px;
+  color: var(--tinta-2);
+  margin: 0 0 14px;
+}
+
+.cartao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  background: var(--cartao);
+  border: 1px solid var(--linha);
+  border-left: 3px solid var(--ouro);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+}
+
+.cartao div {
+  min-width: 0;
+}
+
+.cartao b {
+  display: block;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+
+.cartao span {
+  display: block;
+  color: var(--tinta-2);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.cartao button {
+  padding: 7px 16px;
+  font-size: 13.5px;
+  flex-shrink: 0;
+}
+
+.vazio {
+  text-align: center;
+  color: var(--tinta-3);
+  border: 1px dashed var(--linha);
+  border-radius: 8px;
+  padding: 22px;
+  margin: 0;
+}
+
+.nao-achou a {
+  color: var(--azul-claro);
+}
+
+@media (max-width: 520px) {
+  .ficha {
+    padding: 20px 18px 18px;
+  }
+
+  .acoes {
+    flex-direction: column;
+  }
+}

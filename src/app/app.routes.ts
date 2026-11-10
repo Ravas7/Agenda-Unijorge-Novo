@@ -7,6 +7,7 @@ import { Padrao } from './padrao/padrao';
 import { NaoEncontrada } from './nao-encontrada/nao-encontrada';
 import { CadastroEvento } from './cadastro-evento/cadastro-evento';
 import { Empresa } from './empresa/empresa';
+import { Participante } from './participante/participante';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -16,6 +17,9 @@ export const routes: Routes = [
   { path: 'padrao', component: Padrao },
 
   { path: 'eventos/novo', component: CadastroEvento },
+
+  // Os participantes de UM evento: o :id e o id do evento.
+  { path: 'eventos/:id/participantes', component: Participante },
 
   {
     path: 'cadastro-evento',

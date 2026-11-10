@@ -216,13 +216,22 @@
           </p>
         </div>
 
-        <button
-          type="button"
-          class="botao-excluir"
-          (click)="excluirEvento(evento.id)"
-        >
-          Excluir
-        </button>
+        <div class="acoes-evento">
+          <a
+            class="botao-participantes"
+            [routerLink]="['/eventos', evento.id, 'participantes']"
+          >
+            Participantes ({{ servico.quantidadeDeParticipantes(evento.id) }})
+          </a>
+
+          <button
+            type="button"
+            class="botao-excluir"
+            (click)="excluirEvento(evento.id)"
+          >
+            Excluir
+          </button>
+        </div>
       </article>
     } @empty {
       <p class="vazio">
