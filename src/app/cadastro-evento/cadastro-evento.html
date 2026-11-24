@@ -197,12 +197,12 @@
 
           <p>
             <strong>Data:</strong>
-            {{ evento.data }}
+            {{ evento.data | date:'dd/MM/yyyy' }}
           </p>
 
           <p>
             <strong>Local:</strong>
-            {{ evento.local }}
+            {{ evento.local | uppercase }}
           </p>
 
           <p>
@@ -212,7 +212,7 @@
 
           <p>
             <strong>Vagas:</strong>
-            {{ evento.vagas }}
+            {{ evento.vagas | number }}
           </p>
         </div>
 
@@ -240,3 +240,4 @@
     }
   </section>
 </section>
+

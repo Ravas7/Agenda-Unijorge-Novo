@@ -10,21 +10,18 @@
  *     e cada participante aponta para o evento a que pertence.
  */
 
-export type FormaPagamento =
-  | 'pix'
-  | 'cartao_credito'
-  | 'cartao_debito'
-  | 'boleto'
-  | 'dinheiro'
-  | '';
+export type FormaPagamento = 'pix' | 'cartao' | 'boleto' | 'dinheiro' | '';
 
-/** As opcoes do <select>: o valor que se guarda e o texto que se le. */
-export const FORMAS_PAGAMENTO: { valor: FormaPagamento; rotulo: string }[] = [
-  { valor: 'pix', rotulo: 'Pix' },
-  { valor: 'cartao_credito', rotulo: 'Cartão de crédito' },
-  { valor: 'cartao_debito', rotulo: 'Cartão de débito' },
-  { valor: 'boleto', rotulo: 'Boleto' },
-  { valor: 'dinheiro', rotulo: 'Dinheiro' }
+/**
+ * As opcoes do <select>: so o CODIGO que se guarda ('' fica de fora, e o
+ * "nada escolhido"). O texto que a pessoa le vem do pipe formaPagamento,
+ * que e o unico lugar onde os rotulos moram.
+ */
+export const FORMAS_PAGAMENTO: Exclude<FormaPagamento, ''>[] = [
+  'pix',
+  'cartao',
+  'boleto',
+  'dinheiro'
 ];
 
 /** O que fica guardado depois de salvar. */
@@ -57,9 +54,4 @@ export function rascunhoParticipanteEmBranco(): RascunhoParticipante {
     telefone: '',
     formaPagamento: ''
   };
-}
-
-/** Devolve o texto de leitura de uma forma de pagamento ('pix' -> 'Pix'). */
-export function rotuloFormaPagamento(forma: FormaPagamento): string {
-  return FORMAS_PAGAMENTO.find(f => f.valor === forma)?.rotulo ?? '';
 }

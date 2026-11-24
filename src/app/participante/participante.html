@@ -9,7 +9,8 @@
   <!-- ====================== O EVENTO ====================== -->
   <section class="evento">
     <b>{{ e.titulo }}</b>
-    <span>{{ e.data }} &middot; {{ e.local }}</span>
+    <span>{{ e.data | date:'dd/MM/yyyy' }} &middot; {{ e.data | diasPara }}</span>
+    <span>{{ e.data | date:"EEEE, d 'de' MMMM" }} &middot; {{ e.local }}</span>
     <span>
       {{ participantes.length }} de {{ e.vagas }} vagas preenchidas
     </span>
@@ -30,7 +31,7 @@
       <label for="descricao">Descrição</label>
       <input id="descricao" name="descricao" type="text"
              maxlength="100"
-             placeholder="Ex.: Maria Souza, aluna de Engenharia"
+             placeholder="Ex.: Maria da Silva Santos"
              [(ngModel)]="rascunho.descricao"
              [class.invalido]="deveMostrar('descricao')"
              (blur)="marcarTocado('descricao')">
@@ -71,8 +72,8 @@
               [class.invalido]="deveMostrar('formaPagamento')"
               (blur)="marcarTocado('formaPagamento')">
         <option value="">Selecione...</option>
-        @for (f of formas; track f.valor) {
-          <option [value]="f.valor">{{ f.rotulo }}</option>
+        @for (f of formas; track f) {
+          <option [value]="f">{{ f | formaPagamento }}</option>
         }
       </select>
       @if (deveMostrar('formaPagamento')) {
@@ -92,10 +93,11 @@
 
     @for (p of participantes; track p.id) {
       <article class="cartao">
-        <div>
+        <span class="avatar" aria-hidden="true">{{ p.descricao | iniciais }}</span>
+        <div class="dados">
           <b>{{ p.descricao }}</b>
-          <span>{{ p.email }} &middot; {{ p.telefone }}</span>
-          <span>Pagamento: {{ rotuloPagamento(p.formaPagamento) }}</span>
+          <span>{{ p.email }} &middot; {{ p.telefone | telefone }}</span>
+          <span>Pagamento: {{ p.formaPagamento | formaPagamento }}</span>
         </div>
         <button type="button" class="secundario" (click)="remover(p.id)">Remover</button>
       </article>

@@ -1,3 +1,4 @@
+import { DatePipe, DecimalPipe, UpperCasePipe} from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -9,7 +10,7 @@ import * as ValidacoesEvento from '../models/evento.validacao';
 @Component({
   selector: 'app-cadastro-evento',
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, DatePipe, UpperCasePipe, DecimalPipe],
   templateUrl: './cadastro-evento.html',
   styleUrl: './cadastro-evento.css'
 })

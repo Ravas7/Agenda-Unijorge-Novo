@@ -1,8 +1,13 @@
+import { DatePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { Evento } from '../models/evento';
+import { DiasParaPipe } from '../pipes/dias-para-pipe';
+import { FormaPagamentoPipe } from '../pipes/forma-pagamento-pipe';
+import { IniciaisPipe } from '../pipes/iniciais-pipe';
+import { TelefonePipe } from '../pipes/telefone-pipe';
 import { EventoService } from '../services/evento.service';
 import {
   CadastroParticipante,
@@ -10,10 +15,8 @@ import {
   CamposTocadosParticipante,
   ErrosParticipante,
   FORMAS_PAGAMENTO,
-  FormaPagamento,
   RascunhoParticipante,
-  rascunhoParticipanteEmBranco,
-  rotuloFormaPagamento
+  rascunhoParticipanteEmBranco
 } from './participante.model';
 import { validarRascunhoParticipante } from './participante.validacao';
 
@@ -34,7 +37,15 @@ import { validarRascunhoParticipante } from './participante.validacao';
  */
 @Component({
   selector: 'app-participante',
-  imports: [FormsModule, RouterLink],
+  imports: [
+    FormsModule,
+    RouterLink,
+    DatePipe,
+    DiasParaPipe,
+    FormaPagamentoPipe,
+    IniciaisPipe,
+    TelefonePipe
+  ],
   templateUrl: './participante.html',
   styleUrl: './participante.css'
 })
@@ -129,9 +140,5 @@ export class Participante {
 
   remover(id: number): void {
     this.servico.removerParticipante(id);
-  }
-
-  rotuloPagamento(forma: FormaPagamento): string {
-    return rotuloFormaPagamento(forma);
   }
 }
