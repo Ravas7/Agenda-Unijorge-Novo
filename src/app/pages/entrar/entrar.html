@@ -1,0 +1,34 @@
+<header class="cabeca">
+  <h2>Entrar</h2>
+  <p>
+    Usuário de teste: <code>emilys</code> &middot; senha: <code>emilyspass</code>
+  </p>
+</header>
+
+<form class="ficha" (ngSubmit)="entrar()" novalidate>
+
+  @if (erro()) {
+    <p class="resumo" role="alert">{{ erro() }}</p>
+  }
+
+  <div class="campo">
+    <label for="usuario">Usuário</label>
+    <input id="usuario" name="usuario" type="text"
+           autocomplete="username"
+           [(ngModel)]="usuario">
+  </div>
+
+  <div class="campo">
+    <label for="senha">Senha</label>
+    <input id="senha" name="senha" type="password"
+           autocomplete="current-password"
+           [(ngModel)]="senha">
+  </div>
+
+  <div class="acoes">
+    <button type="submit"
+            [disabled]="carregando() || !usuario().trim() || !senha()">
+      {{ carregando() ? 'Entrando...' : 'Entrar' }}
+    </button>
+  </div>
+</form>

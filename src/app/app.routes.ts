@@ -8,6 +8,8 @@ import { NaoEncontrada } from './nao-encontrada/nao-encontrada';
 import { CadastroEvento } from './cadastro-evento/cadastro-evento';
 import { Empresa } from './empresa/empresa';
 import { Participante } from './participante/participante';
+import { Entrar } from './pages/entrar/entrar';
+import { Perfil } from './pages/perfil/perfil';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -28,6 +30,9 @@ export const routes: Routes = [
   },
 
   { path: 'empresa', component: Empresa },
+
+  { path: 'entrar', component: Entrar },
+  { path: 'perfil', component: Perfil },
 
   // A rota curinga deve ficar por último.
   { path: '**', component: NaoEncontrada }

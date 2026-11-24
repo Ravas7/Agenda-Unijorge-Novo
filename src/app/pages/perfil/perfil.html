@@ -1,0 +1,43 @@
+@if (perfil(); as p) {
+  <section class="saudacao">
+    <div>
+      <h2>Olá, {{ p.firstName }} {{ p.lastName }}</h2>
+      <span>{{ p.email }}</span>
+    </div>
+    <button type="button" class="secundario" (click)="sair()">Sair</button>
+  </section>
+} @else if (erroPerfil()) {
+  <p class="resumo" role="alert">{{ erroPerfil() }}</p>
+} @else {
+  <p class="vazio">Carregando o seu perfil...</p>
+}
+
+<section class="ficha">
+  <h3>Buscar CEP</h3>
+  <p class="dica">Consulta a base dos Correios pelo ViaCEP. Para testar: 40140-110.</p>
+
+  <form class="linha" (ngSubmit)="buscarCep()" novalidate>
+    <div class="campo">
+      <label for="cep">CEP</label>
+      <input id="cep" name="cep" type="text"
+             inputmode="numeric" maxlength="9"
+             placeholder="40140-110"
+             [(ngModel)]="cep">
+    </div>
+
+    <button type="submit" [disabled]="buscando()">
+      {{ buscando() ? 'Buscando...' : 'Buscar' }}
+    </button>
+  </form>
+
+  @if (mensagemCep()) {
+    <p class="resumo" role="alert">{{ mensagemCep() }}</p>
+  }
+
+  @if (endereco(); as e) {
+    <article class="endereco">
+      <b>{{ e.rua }}</b>
+      <span>{{ e.bairro }} &middot; {{ e.cidade }}/{{ e.uf }}</span>
+    </article>
+  }
+</section>
